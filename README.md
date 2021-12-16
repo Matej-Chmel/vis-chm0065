@@ -3,8 +3,10 @@ Projekt pro předmět Vývoj informačních systémů v zimním semestru 2021.
 
 |||
 | :-- | :-- |
-| Osobní číslo | CHM0065      |
-| Téma         | Evidence not |
+| Jméno a příjmení | Matěj Chmel |
+| Osobní číslo | CHM0065 |
+| Téma | Evidence not |
+| Skupina | C/03 |
 
 ## Analýza
 Všech 6 artefaktů analýzy projektu je spojeno do jednoho souboru [vis-chm0065.pdf](vis-chm0065.pdf).
