@@ -1,0 +1,40 @@
+@model ServiceLayer.ExportProcessModel
+
+<h1>Zpracovávání položek</h1>
+<ul>
+	<li>
+		<b>Vyjmutí originálu</b>
+	</li>
+	<li>Kopírování</li>
+	<li>Vrácení originálu</li>
+	<li>Odevzdání</li>
+	<li>Potvrzení</li>
+</ul>
+<p>Přihlášen: @Model.Employee().Username</p>
+
+@if (Model.Empty()) {
+	<h2>Všechny položky objednané z této pobočky byly již expedovány.</h2>
+} else {
+	<h2>Fronta</h2>
+	<table>
+		<tr>
+			<th>Noty</th>
+		</tr>
+		@foreach (var i in Model.Items()) {
+			<tr>
+				<td>@i.Stock.Product.FullName</td>
+			</tr>
+		}
+	</table>
+
+	<h3>Vyjměte originál ze skladu.</h3>
+	<p>Aktuální položka: @Model.First().Stock.Product.FullName</p>
+	<p>Pozice: @Model.First().Stock.Location</p>
+
+	<form method="post" asp-controller="Home" asp-action="ForwardExport">
+		<button type="submit">Originál vyjmut</button>
+		<input type="hidden" asp-for="EmployeeID" value="@Model.EmployeeID" />
+		<input type="hidden" asp-for="OrderItemID" value="@Model.First().ID" />
+		<input type="hidden" asp-for="Stage" value="1" />
+	</form>
+}

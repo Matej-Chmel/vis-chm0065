@@ -1,0 +1,16 @@
+@model ServiceLayer.LimitReachedModel
+
+<h1>Dosažen maximální limit rezervovaných položek.</h1>
+<p>Přihlášen: @Model.Customer().Username</p>
+<p>Aktuální počet rezervovaných položek: @Model.ReservationCount</p>
+
+<p>Odstraňte položky z vaší současné objednávky nebo vraťte některou z vašich výpůjček.</p>
+<p>Pokud se vaše objednávky zpracovávají, prosím vyčkejte na jejich dokončení.</p>
+
+<a
+   asp-controller="Home"
+   asp-action="ForwardOrder"
+   asp-route-customerID="@Model.CustomerID"
+   asp-route-stage="0">
+	Pokračovat na objednávku
+</a>

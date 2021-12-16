@@ -1,0 +1,37 @@
+@model ServiceLayer.ConfirmedOrderModel
+
+<h1>Objednávka</h1>
+<ul>
+	<li>Výběr zboží</li>
+	<li>Způsob dopravy</li>
+	<li>Způsob platby</li>
+	<li>Rekapitulace</li>
+	<li>
+		<b>Dokončení</b>
+	</li>
+</ul>
+<p>Přihlášen: @Model.Customer().Username</p>
+
+<h2>Objednávka přijata</h2>
+<p>Celková cena: @Model.Order().Amount Kč</p>
+
+@if (Model.Order().Online) {
+	<p>Platba online. Objednávku nezačneme expedovat, dokud nebude zaplacena.</p>
+	<a
+	   asp-controller="Home"
+	   asp-action="PayOrder"
+	   asp-route-orderID="@Model.OrderID">
+		Zaplatit nyní
+	</a>
+	<br />
+} else {
+	<p>Platba dobírkou. Objednávku již expedujeme.</p>
+}
+
+<a
+   asp-controller="Home"
+   asp-action="BackFromOrder"
+   asp-route-customerID="@Model.CustomerID"
+   asp-route-stage="1">
+	Zpět na katalog
+</a>

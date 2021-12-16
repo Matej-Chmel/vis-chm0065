@@ -1,0 +1,78 @@
+@model ServiceLayer.DetailModel
+
+<h1>Detail produktu</h1>
+<p>Přihlášen: @Model.Customer().Username</p>
+
+<table>
+	<tr>
+		<th>Autor</th>
+		<th>Název</th>
+		<th>Soubor</th>
+	</tr>
+	<tr>
+		<td>@Model.Product().Author</td>
+		<td>@Model.Product().Name</td>
+		@if(Model.Product().HasFile) {
+			<td>
+				<a asp-controller="Home" asp-action="ShowPDF" asp-route-filename="@Model.Product().Filename" target="_blank">
+					Prohlédnout
+				</a>
+			</td>
+		} else {
+			<td>Není k dispozici</td>
+		}
+	</tr>
+</table>
+
+@if (Model.Empty()) {
+	<h2>Tento produkt není na skladě.</h2>
+} else {
+	<h2>Kusy zboží</h2>
+	<table>
+		<tr>
+			<th>Pobočka</th>
+			<th>Dostupnost</th>
+			<th>Vypůjčit</th>
+			<th>Objednat kopii</th>
+		</tr>
+		@foreach(var s in Model.Stocks()) {
+			<tr>
+				@if(s.Available) {
+					<td>@s.Branch.ID</td>
+					<td>Dostupné</td>
+					<td>
+						<a
+						   asp-controller="Home"
+						   asp-action="AddOrderItem"
+						   asp-route-customerID="@Model.CustomerID"
+						   asp-route-stockID="@s.ID"
+						   asp-route-copy="@false">
+							Vypůjčit
+						</a>
+					</td>
+					<td>
+						<a asp-controller="Home"
+						   asp-action="AddOrderItem"
+						   asp-route-customerID="@Model.CustomerID"
+						   asp-route-stockID="@s.ID"
+						   asp-route-copy="@true">
+							Objednat kopii
+						</a>
+					</td>
+				} else {
+					<td>Vypůjčeno</td>
+					<td>Nedostupné</td>
+					<td></td>
+					<td></td>
+				}
+			</tr>
+		}
+	</table>
+}
+
+<a
+   asp-controller="Home"
+   asp-action="BackFromDetail"
+   asp-route-customerID="@Model.CustomerID">
+	Zpět
+</a>

@@ -1,0 +1,90 @@
+@model ServiceLayer.BorrowingReturnModel
+
+<h1>Vrácení výpůjčky</h1>
+<p>Přihlášen: @Model.Employee().Username</p>
+
+@if (Model.Empty()) {
+	<h2>Vše bylo již vráceno.</h2>
+} else {
+	<form method="post" asp-controller="Home" asp-action="SubmitReturningCustomer">
+		<label asp-for="ActiveCustomerID">Kdo vrací výpůjčku?</label>
+		<select asp-for="ActiveCustomerID" required>
+			@foreach (var c in Model.CustomersWithBorrowing()) {
+				<option value="@c.ID">@c.Username</option>
+			}
+		</select>
+		<br />
+		<button type="submit">Vybrat zákazníka</button>
+		<input type="hidden" asp-for="EmployeeID" value="@Model.EmployeeID" />
+	</form>
+
+	@if(Model.CustomerActive()) {
+		<p>Obsluhovaný zákazník: @Model.ActiveCustomer().Username</p>
+		<h2>Aktivní výpůjčky</h2>
+		<table>
+			<tr>
+				<th>Noty</th>
+				<th>Termín překročen</th>
+				<th>Vybrat</th>
+			</tr>
+			@foreach(var b in Model.Borrowings()) {
+				<tr>
+					<td>@b.OrderItem.Stock.Product.FullName</td>
+					<td>@(b.Late ? "Ano" : "Ne")</td>
+					<td>
+						<a
+						   asp-controller="Home"
+						   asp-action="ChooseBorrowing"
+						   asp-route-employeeID="@Model.EmployeeID"
+						   asp-route-customerID="@Model.ActiveCustomerID"
+						   asp-route-borrowingID="@b.ID">
+							Zvolit
+						</a>
+					</td>
+				</tr>
+			}
+		</table>
+
+		@if(Model.BorrowingChosen()) {
+			<p>Zvolená výpůjčka: @Model.Borrowing().OrderItem.Stock.Product.FullName</p>
+
+			<h3>Poškození</h3>
+			@foreach(var p in Model.Penalties()) {
+				<p>@p.Description</p>
+			}
+
+			<form method="post" asp-controller="Home" asp-action="SubmitDamage">
+				<label asp-for="DamageDescription">Nové poškození</label>
+				<select asp-for="DamageDescription" required>
+					@foreach (var d in Model.DamageOptions()) {
+						<option value="@d">@d</option>
+					}
+				</select>
+				<button type="submit">Přiřadit nové poškození</button>
+				<input type="hidden" asp-for="EmployeeID" value="@Model.EmployeeID" />
+				<input type="hidden" asp-for="ActiveCustomerID" value="@Model.ActiveCustomerID" />
+				<input type="hidden" asp-for="BorrowingID" value="@Model.BorrowingID" />
+			</form>
+
+			<form method="post" asp-controller="Home" asp-action="LoseBorrowing">
+				<button type="submit">Nahlásit ztrátu</button>
+				<input type="hidden" asp-for="EmployeeID" value="@Model.EmployeeID" />
+				<input type="hidden" asp-for="ActiveCustomerID" value="@Model.ActiveCustomerID" />
+				<input type="hidden" asp-for="BorrowingID" value="@Model.BorrowingID" />
+			</form>
+
+			<form method="post" asp-controller="Home" asp-action="ReturnBorrowing">
+				<button type="submit">Výpůjčka vrácena</button>
+				<input type="hidden" asp-for="EmployeeID" value="@Model.EmployeeID" />
+				<input type="hidden" asp-for="ActiveCustomerID" value="@Model.ActiveCustomerID" />
+				<input type="hidden" asp-for="BorrowingID" value="@Model.BorrowingID" />
+			</form>
+
+		} else {
+			<p>Nejprve vyberte výpůjčku.</p>
+		}
+
+	} else {
+		<p>Nejprve vyberte zákazníka.</p>
+	}
+}

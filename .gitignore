@@ -1,0 +1,14 @@
+.vs/
+bin/
+obj/
+
+/databases/MariaDB/
+/databases/MariaDBStatus.txt
+
+!/databases/XML
+/databases/XML/*
+!/databases/XML/backup/
+!/databases/XML/branch.xml
+!/databases/XML/customer.xml
+
+/src/Server/wwwroot/uploads/*.pdf

@@ -1,0 +1,29 @@
+@model ServiceLayer.AddressModel
+
+<h1>Objednávka</h1>
+<ul>
+	<li>Výběr zboží</li>
+	<li>
+		<b>Zadání adresy</b>
+	</li>
+	<li>Způsob platby</li>
+	<li>Rekapitulace</li>
+	<li>Dokončení</li>
+</ul>
+<p>Přihlášen: @Model.Customer().Username</p>
+
+<p>K vašemu účtu není přiřazena adresa. Zadejte ji prosím.</p>
+
+<form method="post" asp-controller="Home" asp-action="SubmitAddress">
+	<label asp-for="Address">Adresa</label>
+	<input type="text" asp-for="Address" required />
+	<button type="submit">Potvrdit</button>
+	<input type="hidden" asp-for="CustomerID" value="@Model.CustomerID" />
+</form>
+
+<a asp-controller="Home"
+   asp-action="BackFromOrder"
+   asp-route-customerID="@Model.CustomerID"
+   asp-route-stage="3">
+	Zpět na výběr způsobu dopravy
+</a>

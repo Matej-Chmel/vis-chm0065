@@ -1,0 +1,62 @@
+@model ServiceLayer.ExportOrderModel
+
+<h1>Objednávka</h1>
+<ul>
+	<li>
+		<b>Výběr zboží</b>
+	</li>
+	<li>Způsob dopravy</li>
+	<li>Způsob platby</li>
+	<li>Rekapitulace</li>
+	<li>Dokončení</li>
+</ul>
+<p>Přihlášen: @Model.Customer().Username</p>
+
+@if (Model.HasOrder()) {
+	<table>
+		<tr>
+			<th>Noty</th>
+			<th>Pobočka</th>
+			<th>Druh</th>
+			<th>Cena</th>
+			<th>Odstranit</th>
+		</tr>
+		@foreach (var i in Model.Order().Items) {
+			<tr>
+				<td>@i.Stock.Product.FullName</td>
+				<td>@i.Branch.ID</td>
+				<td>@(i.Copy ? "Kopie" : "Výpůjčka")</td>
+				<td>@i.Price</td>
+				<td>
+					<a asp-controller="Home"
+					   asp-action="DeleteOrderItem"
+					   asp-route-customerID="@Model.CustomerID"
+					   asp-route-orderItemID="@i.ID">
+						Odstranit
+					</a>
+				</td>
+			</tr>
+		}
+	</table>
+
+	<p>Celková cena: @Model.Order().Amount Kč</p>
+} else {
+	<h2>Objednávka je prázdná.</h2>
+}
+
+<a asp-controller="Home"
+   asp-action="BackFromOrder"
+   asp-route-customerID="@Model.CustomerID"
+   asp-route-stage="1">
+	Zpět na katalog
+</a>
+
+@if (Model.HasOrder()) {
+	<br />
+	<a asp-controller="Home"
+	   asp-action="ForwardOrder"
+	   asp-route-customerID="@Model.CustomerID"
+	   asp-route-stage="1">
+		Pokračovat
+	</a>
+}

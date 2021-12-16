@@ -1,0 +1,40 @@
+@model ServiceLayer.ImportProcessModel
+
+<h1>Vkládání nových not do skladu</h1>
+<ul>
+	<li>Kontrola poškození</li>
+	<li>Skenování</li>
+	<li>
+		<b>Umístění do skladu</b>
+	</li>
+</ul>
+<p>Přihlášen: @Model.Employee().Username</p>
+
+@if (Model.Empty()) {
+	<p>Tato položka je poslední ve frontě.</p>
+} else {
+	<h2>Fronta</h2>
+	<table>
+		<tr>
+			<th>Noty</th>
+		</tr>
+		@foreach (var i in Model.Items()) {
+			<tr>
+				<td>@i.Stock.Product.FullName</td>
+			</tr>
+		}
+	</table>
+}
+
+<p>Aktuální položka: @Model.ActiveOrderItem().Stock.Product.FullName</p>
+
+<form method="post" asp-controller="Home" asp-action="SubmitLocation">
+	<label asp-for="Location">Pozice</label>
+	<input type="text" asp-for="Location" value="" required />
+	<br />
+
+	<button type="submit">Potvrdit umístění</button>
+
+	<input type="hidden" asp-for="EmployeeID" value="@Model.EmployeeID" />
+	<input type="hidden" asp-for="OrderItemID" value="@Model.OrderItemID" />
+</form>

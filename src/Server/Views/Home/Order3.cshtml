@@ -1,0 +1,44 @@
+@model ServiceLayer.ExportOrderModel
+
+<h1>Objednávka</h1>
+<ul>
+	<li>Výběr zboží</li>
+	<li>Způsob dopravy</li>
+	<li>
+		<b>Způsob platby</b>
+	</li>
+	<li>Rekapitulace</li>
+	<li>Dokončení</li>
+</ul>
+<p>Přihlášen: @Model.Customer().Username</p>
+
+<p>Způsob platby: @(Model.Order().Online ? "Online" : "Dobírka")</p>
+
+<a asp-controller="Home"
+   asp-action="ChangePaymentMethod"
+   asp-route-customerID="@Model.CustomerID"
+   asp-route-online="@true">
+	Platba online
+</a>
+<br />
+<a asp-controller="Home"
+   asp-action="ChangePaymentMethod"
+   asp-route-customerID="@Model.CustomerID"
+   asp-route-hasDelivery="@false">
+	Platba dobírkou
+</a>
+
+<br />
+<a asp-controller="Home"
+   asp-action="BackFromOrder"
+   asp-route-customerID="@Model.CustomerID"
+   asp-route-stage="3">
+	Zpět
+</a>
+<br />
+<a asp-controller="Home"
+   asp-action="ForwardOrder"
+   asp-route-customerID="@Model.CustomerID"
+   asp-route-stage="3">
+	Pokračovat
+</a>

@@ -1,0 +1,20 @@
+@model ServiceLayer.PenaltyPaymentModel
+
+<h1>Platební brána</h1>
+<p>Celková cena: @Model.Penalty().Amount Kč</p>
+
+<a asp-controller="Home"
+   asp-action="PayPenaltyResult"
+   asp-route-penaltyID="@Model.PenaltyID"
+   asp-route-customerID="@Model.CustomerID"
+   asp-route-success="@true">
+	Platba proběhla úspěšně
+</a>
+<br />
+<a asp-controller="Home"
+   asp-action="PayPenaltyResult"
+   asp-route-penaltyID="@Model.PenaltyID"
+   asp-route-customerID="@Model.CustomerID"
+   asp-route-success="@false">
+	Platba selhala
+</a>

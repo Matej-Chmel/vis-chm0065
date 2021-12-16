@@ -1,0 +1,17 @@
+@model ServiceLayer.RequestFormModel
+
+<h1>Žádost o objednání nových not</h1>
+<p>Přihlášen: @Model.Customer().Username</p>
+
+<form method="post" asp-controller="Home" asp-action="AddRequest">
+	<label asp-for="Author">Autor</label>
+	<input type="text" asp-for="Author" value="" required />
+	<br />
+
+	<label asp-for="Name">Název</label>
+	<input type="text" asp-for="Name" value="" required />
+	<br />
+
+	<button type="submit">Zažádat</button>
+	<input type="hidden" asp-for="CustomerID" value="@Model.CustomerID" />
+</form>

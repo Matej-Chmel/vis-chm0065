@@ -1,0 +1,32 @@
+@model ServiceLayer.StockReturnModel
+
+<h1>Umístění zpět do skladu</h1>
+<p>Přihlášen: @Model.Employee().Username</p>
+
+@if (Model.Empty()) {
+	<p>Všechny vrácené výpůjčky byly již umístěny.</p>
+} else {
+	<h2>Fronta</h2>
+	<table>
+		<tr>
+			<th>Noty</th>
+		</tr>
+		@foreach (var s in Model.Stocks()) {
+			<tr>
+				<td>@s.Product.FullName</td>
+			</tr>
+		}
+	</table>
+	<p>Aktuální položka: @Model.First().Product.FullName</p>
+
+	<form method="post" asp-controller="Home" asp-action="ReturnStock">
+		<label asp-for="Location">Pozice</label>
+		<input type="text" asp-for="Location" value="" required />
+		<br />
+
+		<button type="submit">Potvrdit umístění</button>
+
+		<input type="hidden" asp-for="EmployeeID" value="@Model.EmployeeID" />
+		<input type="hidden" asp-for="StockID" value="@Model.First().ID" />
+	</form>
+}

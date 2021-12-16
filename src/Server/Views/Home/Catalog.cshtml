@@ -1,0 +1,44 @@
+@model ServiceLayer.CatalogModel
+
+<h1>Katalog</h1>
+<p>Přihlášen: @Model.Customer().Username</p>
+
+<a
+   asp-controller="Home"
+   asp-action="ForwardOrder"
+   asp-route-customerID="@Model.CustomerID"
+   asp-route-stage="0">
+	Pokračovat na objednávku
+</a>
+<br />
+
+<table>
+	<tr>
+		<th>Autor</th>
+		<th>Název</th>
+		<th>Detail</th>
+	</tr>
+	@foreach(var p in Model.Products()) {
+		<tr>
+			<td>@p.Author</td>
+			<td>@p.Name</td>
+			<td>
+				<a
+				   asp-controller="Home"
+				   asp-action="Detail"
+				   asp-route-customerID="@Model.CustomerID"
+				   asp-route-productID="@p.ID">
+					Detail
+				</a>
+			</td>
+		</tr>
+	}
+</table>
+
+<p>Nenašli jste co hledáte? Zažádejte si o objednání nových not.</p>
+<a
+   asp-controller="Home"
+   asp-action="ToRequestForm"
+   asp-route-customerID="@Model.CustomerID">
+	Zažádat
+</a>

@@ -1,0 +1,64 @@
+@model ServiceLayer.ImportOrderModel
+
+<h1>Objednání nových not</h1>
+
+<form method="post" asp-controller="Home" asp-action="AddProduct" enctype="multipart/form-data">
+	<label asp-for="Product.Author">Autor</label>
+	<input type="text" asp-for="Product.Author" value="" required />
+	<br />
+
+	<label asp-for="Product.Name">Název</label>
+	<input type="text" asp-for="Product.Name" value="" required />
+	<br />
+
+	<label for="ProductFile">Soubor</label>
+	<input name="ProductFile" type="file" />
+	<br />
+
+	<button type="submit">Přidat produkt</button>
+
+	<input type="hidden" asp-for="ImportOrderID" value="@Model.ImportOrderID" />
+</form>
+
+<form method="post" asp-controller="Home" asp-action="AddImportItem">
+	<label asp-for="ProductID">Noty</label>
+	<select asp-for="ProductID" required>
+		@foreach (var p in Model.Products()) {
+			<option value="@p.ID">@p.FullName</option>
+		}
+	</select>
+	<br />
+
+	<label asp-for="BranchID">Pobočka</label>
+	<select asp-for="BranchID" required>
+		@foreach (var b in Model.Branches()) {
+			<option value="@b.ID">@b.ID</option>
+		}
+	</select>
+	<br />
+
+	<button type="submit">Přidat položku</button>
+
+	<input type="hidden" asp-for="ImportOrderID" value="@Model.ImportOrderID" />
+</form>
+
+@if (Model.ImportOrderID >= 0) {
+	<h2>Objednávka</h2>
+	<table>
+		<tr>
+			<th>Noty</th>
+			<th>Pobočka</th>
+		</tr>
+		@foreach (var i in Model.Items()) {
+			<tr>
+				<td>@i.Stock.Product.FullName</td>
+				<td>@i.Stock.Branch.ID</td>
+			</tr>
+		}
+	</table>
+
+	<form method="post" asp-controller="Home" asp-action="ConfirmImportOrder">
+		<button type="submit">Potvrdit objednávku</button>
+		<input type="hidden" asp-for="ImportOrderID" value="@Model.ImportOrderID" />
+	</form>
+}

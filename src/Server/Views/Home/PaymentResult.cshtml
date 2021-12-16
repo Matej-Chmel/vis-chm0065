@@ -1,0 +1,34 @@
+@model ServiceLayer.PaymentResultModel
+
+@if (Model.Success) {
+	<p>Platba proběhla v pořádku.</p>
+
+	@if (Model.PayingOrder) {
+		<p>Objednávku začneme co nejdříve expedovat.</p>
+	} else {
+		<p>Penále zaplaceny.</p>
+
+		<a asp-controller="Home"
+		   asp-action="BackFromDetail"
+		   asp-route-customerID="@Model.CustomerID">
+			Do katalogu
+		</a>
+	}
+} else {
+	<p>Platba selhala.</p>
+
+	@if (Model.PayingOrder) {
+		<p>Objednávka byla zrušena.</p>
+	} else {
+		<p>Penále nebyly zaplaceny.</p>
+	}
+}
+
+@if(!Model.PayingOrder) {
+	<br />
+	<a asp-controller="Home"
+	   asp-action="ToUnpaidPenalties"
+	   asp-route-customerID="@Model.CustomerID">
+		Zpět na seznam penále
+	</a>
+}

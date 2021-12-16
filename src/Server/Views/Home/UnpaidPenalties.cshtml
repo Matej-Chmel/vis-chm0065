@@ -1,0 +1,44 @@
+@model ServiceLayer.UnpaidPenaltiesModel
+
+<h1>Nezaplacené penále</h1>
+<p>Přihlášen: @Model.Customer().Username</p>
+
+@if (Model.Empty()) {
+	<h3>V pořádku. Nemáte žádné nezaplacené penále.</h3>
+} else {
+
+	@if(Model.FromDetail) {
+		<h2>Máte nezaplacené penále. Dokud je nezaplatíte, nemůžete si nic objednat.</h2>
+	}
+
+	<h3>Penále</h3>
+	<table>
+		<tr>
+			<th>Noty</th>
+			<th>Popis</th>
+			<th>Částka</th>
+			<th>Zaplatit</th>
+		</tr>
+		@foreach (var p in Model.Penalties()) {
+			<tr>
+				<td>@p.Borrowing.OrderItem.Stock.Product.FullName</td>
+				<td>@p.Description</td>
+				<td>@p.Amount Kč</td>
+				<td>
+					<a asp-controller="Home"
+					   asp-action="PayPenalty"
+					   asp-route-penaltyID="@p.ID"
+					   asp-route-customerID="@Model.CustomerID">
+						Zaplatit
+					</a>
+				</td>
+			</tr>
+		}
+	</table>
+}
+
+<a asp-controller="Home"
+   asp-action="BackFromDetail"
+   asp-route-customerID="@Model.CustomerID">
+	Do katalogu
+</a>

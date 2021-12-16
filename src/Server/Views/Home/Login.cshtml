@@ -1,0 +1,13 @@
+@model ServiceLayer.LoginModel
+
+<form method="post" asp-controller="Home" asp-action="SubmitLogin">
+	<label asp-for="CustomerID">Uživatel</label>
+	<select asp-for="CustomerID" required>
+		@foreach(var c in Model.Customers()) {
+			<option value="@c.ID">@c.Username</option>
+		}
+	</select>
+	<br />
+	<button type="submit">Přihlásit se</button>
+	<input type="hidden" asp-for="Reason" value="@Model.Reason" />
+</form>

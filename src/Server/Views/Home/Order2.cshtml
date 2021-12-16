@@ -1,0 +1,49 @@
+@model ServiceLayer.ExportOrderModel
+
+<h1>Objednávka</h1>
+<ul>
+	<li>Výběr zboží</li>
+	<li>
+		<b>Způsob dopravy</b>
+	</li>
+	<li>Způsob platby</li>
+	<li>Rekapitulace</li>
+	<li>Dokončení</li>
+</ul>
+<p>Přihlášen: @Model.Customer().Username</p>
+
+<p>Způsob dopravy: @(Model.Order().HasDelivery ? "Přeprava k zákazníkovi" : "Osobní odběr")</p>
+
+<a asp-controller="Home"
+   asp-action="ChangeDelivery"
+   asp-route-customerID="@Model.CustomerID"
+   asp-route-hasDelivery="@true">
+	Přeprava k zákazníkovi
+</a>
+
+@if (Model.PickUpPossible()) {
+	<br />
+	<a asp-controller="Home"
+	   asp-action="ChangeDelivery"
+	   asp-route-customerID="@Model.CustomerID"
+	   asp-route-hasDelivery="@false">
+		Osobní odběr
+	</a>
+} else {
+	<p>Osobní odběr není možný, jelikož se položky nacházejí na více pobočkách.</p>
+}
+
+<br />
+<a asp-controller="Home"
+   asp-action="BackFromOrder"
+   asp-route-customerID="@Model.CustomerID"
+   asp-route-stage="2">
+	Zpět
+</a>
+<br />
+<a asp-controller="Home"
+   asp-action="ForwardOrder"
+   asp-route-customerID="@Model.CustomerID"
+   asp-route-stage="2">
+	Pokračovat
+</a>

@@ -1,0 +1,39 @@
+@model ServiceLayer.ServiceModel
+
+<h1>Hlavní nabídka</h1>
+
+<ul>
+	<li>
+		<a asp-controller="Home" asp-action="ImportOrder">UC5: Objednání nových not</a>
+	</li>
+	<li>
+		<a asp-controller="Home" asp-action="Login" asp-route-reason="1">UC5: Vkládání not do skladu</a>
+	</li>
+	<li>
+		<a asp-controller="Home" asp-action="Login" asp-route-reason="0">UC1 a UC2: Katalog</a>
+	</li>
+	<li>
+		<a asp-controller="Home" asp-action="Login" asp-route-reason="2">UC3: Zpracování položky</a>
+	</li>
+	<li>
+		<a asp-controller="Home" asp-action="Delivery">Doručení objednávky</a>
+	</li>
+	<li>
+		<a asp-controller="Home" asp-action="Login" asp-route-reason="3">UC4: Vrácení výpůjčky</a>
+	</li>
+	<li>
+		<a asp-controller="Home" asp-action="Login" asp-route-reason="4">UC4: Umístění zpět do skladu</a>
+	</li>
+	<li>
+		<a asp-controller="Home" asp-action="Login" asp-route-reason="5">Nezaplacené penále</a>
+	</li>
+	<li>
+		<a asp-controller="Home" asp-action="Login" asp-route-reason="6">Nezaplacené objednávky</a>
+	</li>
+	<li>
+		<a asp-controller="Home" asp-action="Requests">Žádosti o objednání nových not</a>
+	</li>
+</ul>
+
+<p>Právě využívané úložiště: @(Model.MariaDBActive() ? "MariaDB" : "XML")</p>
+<a asp-controller="Home" asp-action="FlipStorage">Přepnout na @(Model.MariaDBActive() ? "XML" : "MariaDB").</a>

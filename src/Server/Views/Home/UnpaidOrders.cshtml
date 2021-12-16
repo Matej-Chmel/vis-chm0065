@@ -1,0 +1,55 @@
+@model ServiceLayer.UnpaidOrdersModel
+
+<h1>Nezaplacené objednávky s platbou online</h1>
+<p>Přihlášen: @Model.Customer().Username</p>
+
+@if (Model.Empty()) {
+	<h3>Vše zaplaceno.</h3>
+} else {
+	@foreach (var o in Model.Orders()) {
+		<h3>Objednávka</h3>
+		<table>
+			<tr>
+				<th>Způsob dopravy</th>
+				<th>Způsob platby</th>
+				<th>Cena</th>
+				<th>Zaplatit</th>
+			</tr>
+			<tr>
+				<td>@(o.HasDelivery ? "Přeprava k zákazníkovi" : "Osobní odběr")</td>
+				<td>@(o.Online ? "Online" : "Dobírka")</td>
+				<td>@o.Amount Kč</td>
+				<td>
+					<a asp-controller="Home"
+					   asp-action="PayOrder"
+					   asp-route-orderID="@o.ID">
+						Zaplatit
+					</a>
+				</td>
+			</tr>
+		</table>
+		<h3>Položky</h3>
+		<table>
+			<tr>
+				<th>Noty</th>
+				<th>Pobočka</th>
+				<th>Druh</th>
+				<th>Cena</th>
+			</tr>
+			@foreach (var i in o.Items) {
+				<tr>
+					<td>@i.Stock.Product.FullName</td>
+					<td>@i.Branch.ID</td>
+					<td>@(i.Copy ? "Kopie" : "Výpůjčka")</td>
+					<td>@i.Price</td>
+				</tr>
+			}
+		</table>
+	}
+}
+
+<a asp-controller="Home"
+   asp-action="BackFromDetail"
+   asp-route-customerID="@Model.CustomerID">
+	Do katalogu
+</a>

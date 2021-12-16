@@ -1,0 +1,20 @@
+@model ServiceLayer.OrderPaymentModel
+
+<h1>Platební brána</h1>
+<p>Celková cena: @Model.Order().Amount Kč</p>
+
+<a
+   asp-controller="Home"
+   asp-action="PayOrderResult"
+   asp-route-orderID="@Model.OrderID"
+   asp-route-success="@true">
+	Platba proběhla úspěšně
+</a>
+<br />
+<a
+   asp-controller="Home"
+   asp-action="PayOrderResult"
+   asp-route-orderID="@Model.OrderID"
+   asp-route-success="@false">
+	Platba selhala
+</a>

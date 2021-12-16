@@ -1,0 +1,48 @@
+@model ServiceLayer.ExportOrderModel
+
+<h1>Objednávka</h1>
+<ul>
+	<li>Výběr zboží</li>
+	<li>Způsob dopravy</li>
+	<li>Způsob platby</li>
+	<li>
+		<b>Rekapitulace</b>
+	</li>
+	<li>Dokončení</li>
+</ul>
+<p>Přihlášen: @Model.Customer().Username</p>
+
+<table>
+	<tr>
+		<th>Noty</th>
+		<th>Pobočka</th>
+		<th>Druh</th>
+		<th>Cena</th>
+	</tr>
+	@foreach (var i in Model.Order().Items) {
+		<tr>
+			<td>@i.Stock.Product.FullName</td>
+			<td>@i.Branch.ID</td>
+			<td>@(i.Copy ? "Kopie" : "Výpůjčka")</td>
+			<td>@i.Price</td>
+		</tr>
+	}
+</table>
+
+<p>Celková cena: @Model.Order().Amount Kč</p>
+<p>Způsob dopravy: @(Model.Order().HasDelivery ? "Přeprava k zákazníkovi" : "Osobní odběr")</p>
+<p>Způsob platby: @(Model.Order().Online ? "Online" : "Dobírka")</p>
+
+<a asp-controller="Home"
+   asp-action="BackFromOrder"
+   asp-route-customerID="@Model.CustomerID"
+   asp-route-stage="4">
+	Zpět
+</a>
+<br />
+<a asp-controller="Home"
+   asp-action="ForwardOrder"
+   asp-route-customerID="@Model.CustomerID"
+   asp-route-stage="4">
+	Potvrdit objednávku
+</a>

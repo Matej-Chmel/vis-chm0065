@@ -1,0 +1,41 @@
+@model ServiceLayer.RequestsModel
+
+<h1>Žádosti o objednání nových not</h1>
+
+@if (Model.LoggedIn()) {
+	<p>Přihlášen: @Model.Customer().Username</p>
+}
+
+@if (Model.Empty()) {
+	<p>Žádné žádosti neexistují.</p>
+} else {
+	<table>
+		<tr>
+			<th>Zažádána uživatelem</th>
+			<th>Žádané noty</th>
+			<th>Stav</th>
+		</tr>
+		@foreach (var r in Model.Requests()) {
+			<tr>
+				<td>@r.Customer.Username</td>
+				<td>@r.Product.FullName</td>
+				<td>@(r.Accepted ? "Přijata" : "Čeká na vyřízení")</td>
+			</tr>
+		}
+	</table>
+}
+
+@if (Model.LoggedIn()) {
+	<a asp-controller="Home"
+	   asp-action="BackFromDetail"
+	   asp-route-customerID="@Model.CustomerID">
+		Zpět do katalogu
+	</a>
+	<br />
+}
+
+<a
+   asp-controller="Home"
+   asp-action="Menu">
+	Zpět do hlavní nabídky
+</a>
