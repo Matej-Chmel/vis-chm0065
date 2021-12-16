@@ -7,24 +7,31 @@ Projekt pro předmět Vývoj informačních systémů v zimním semestru 2021.
 | Téma         | Evidence not |
 
 ## Analýza
-Všech 6 artefaktů analýzy projektu je spojeno v jeden soubor [vis-chm0065.pdf](vis-chm0065.pdf).
+Všech 6 artefaktů analýzy projektu je spojeno do jednoho souboru [vis-chm0065.pdf](vis-chm0065.pdf).
+
+## Spuštění implementace
+1. Otevřete [vis-chm0065.sln](vis-chm0065.sln)
+2. Spusťte výchozí konfiguraci.
+3. Systém čte data z XML. Pokud chcete využívat MariaDB, musíte ji nejprve nainstalovat.
 
 ## Spuštění MariaDB
-Pro zapnutí MariaDB je potřeba nejdříve spustit skript [Start-MariaDB.ps1](Start-MariaDB.ps1). Ten ji nainstaluje z archivu [MariaDB.zip](databases/MariaDB.zip) do složky `databases/MariaDB`. Databáze je lokální a nemodifikuje registry hostujícího počítače. Skript nakonec otevře okno s procesem `mysqld`. Ten musí zůstat zapnutý po celou dobu běhu webového serveru.
+1. Otevřete Powershell jako administrátor.
+2. Nastavte spouštěcí politiku tímto příkazem: `Set-ExecutionPolicy RemoteSigned`
+3. Spusťte skript [Start-MariaDB.ps1](Start-MariaDB.ps1)
+4. Vyčkejte.
+5. Skript otevře okno s procesem `mysqld`. Ten musí zůstat zapnutý po celou dobu běhu webového serveru.
+6. Po ukončení práce můžete nastavit spouštěcí politiku zpět tímto příkazem: `Set-ExecutionPolicy Restricted`
 
 ### Požadavek o přístup k síti
-Databáze funguje lokálně. Pokud vás systém vyzve k povolení přístupu k síti, můžete jej odmítnout.
+Databáze je lokální a nemodifikuje registry hostujícího počítače. Pokud vás systém vyzve k povolení přístupu k síti, můžete jej odmítnout.
 
-### Funkčnost bez MariaDB
-Bez spuštění MariaDB lze stále používat evidenci not přes XML úložiště.
+### Obnova dat MariaDB
+1. Nastavte správně spouštěcí politiku.
+2. Spusťte příkaz `Start-MariaDB.ps1 -Restore`.
+3. Databáze bude spuštěna s daty ze [schema.sql](databases/schema.sql)
+4. Pro obnovu XML můžete spustit skript [Restore-XML.ps1](Restore-XML.ps1)
 
-### Obnova dat
-Pro obnovu dat do původní podoby, jak je popsáno ve [schema.sql](databases/schema.sql) je možné skriptu [Start-MariaDB.ps1](Start-MariaDB.ps1) poskytnout parametr `-Restore`. Skript [Restore-XML.ps1](Restore-XML.ps1) obnovuje XML soubory. Nepřijímá žádné parametry.
-
-## Spuštění webového serveru
-Otevřením souboru řešení [vis-chm0065.sln](vis-chm0065.sln) a spuštěním projektu Server s konfigurací IIS Express se otevře okno internetového prohlížeče s webovou stránkou evidence not.
-
-### Kompatibilita s Visual Studiem 2022
+## Kompatibilita s Visual Studiem 2022
 Projekt byl vyvíjen ve VS2019. Pro spuštění přes VS2022 je nutné nainstalovat komponentu `.NET 5.0 Runtime`, kterou lze najít v seznamu individuálních komponent při modifikování VS2022 pomocí programu Visual Studio Installer.
 
 ## Příkladové PDF soubory
@@ -39,4 +46,4 @@ Projekt využívá externích knihoven a ikon. Licence jsou přiloženy uvnitř 
 - [jquery-validation](src/Server/wwwroot/lib/jquery-validation/LICENSE.md)
 - [jquery-validation-unobtrusive](src/Server/wwwroot/lib/jquery-validation-unobtrusive/LICENSE.txt)
 - MariaDB
-	- Licence se nachází v archivu [MariaDB.zip](databases/MariaDB.zip). Po rozbalení je dostupná pod cestou `databases/MariaDB/COPYING`.
+	- Licence se nachází v archivu [MariaDB.zip](databases/MariaDB.zip), který bude rozbalen při instalaci této databáze. Licence je poté dostupná pod cestou `databases/MariaDB/COPYING`.
